@@ -192,18 +192,87 @@ function Lights() {
   )
 }
 
+/* ── Orbiting satellite shards — small facets circling the X ────── */
+function Orbiters({ count = 5 }) {
+  const group = useRef()
+  const seeds = useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => ({
+        radius: 2.6 + (i % 3) * 0.7,
+        speed: 0.15 + (i % 4) * 0.06,
+        phase: (i / count) * Math.PI * 2,
+        tilt: (i - count / 2) * 0.35,
+        size: 0.12 + (i % 3) * 0.05,
+      })),
+    [count]
+  )
+
+  useFrame((state, dt) => {
+    const g = group.current
+    if (!g) return
+    const t = state.clock.elapsedTime
+    // The whole ring drifts with the X and tilts with scroll.
+    g.rotation.x = damp(g.rotation.x, scrollStore.progress * 1.2, 2.5, dt)
+    g.rotation.z += dt * 0.05
+    g.children.forEach((m, i) => {
+      const s = seeds[i]
+      const a = t * s.speed + s.phase
+      m.position.set(Math.cos(a) * s.radius, Math.sin(a) * s.radius * 0.5 + s.tilt, Math.sin(a) * s.radius)
+      m.rotation.x += dt * 0.6
+      m.rotation.y += dt * 0.4
+    })
+  })
+
+  return (
+    <group ref={group}>
+      {seeds.map((s, i) => (
+        <mesh key={i} scale={s.size}>
+          <octahedronGeometry args={[1, 0]} />
+          <meshStandardMaterial
+            color={i % 2 ? '#7c3aed' : '#3d6bff'}
+            emissive={i % 2 ? '#7c3aed' : '#3d6bff'}
+            emissiveIntensity={1.6}
+            roughness={0.3}
+            metalness={0.7}
+            flatShading
+          />
+        </mesh>
+      ))}
+    </group>
+  )
+}
+
+/* ── Scroll-driven camera dolly + drift ─────────────────────────── */
+function CameraRig() {
+  useFrame((state, dt) => {
+    const p = scrollStore.progress
+    const cam = state.camera
+    // Dolly back + rise slightly through the journey; sway with pointer.
+    const tx = scrollStore.pointer.x * 0.8
+    const ty = 0.4 + scrollStore.pointer.y * 0.6 - p * 0.6
+    const tz = 6 + p * 1.6
+    cam.position.x = damp(cam.position.x, tx, 2, dt)
+    cam.position.y = damp(cam.position.y, ty, 2, dt)
+    cam.position.z = damp(cam.position.z, tz, 2, dt)
+    cam.lookAt(0, -p * 0.8, 0)
+  })
+  return null
+}
+
 export default function Scene() {
   return (
     <Canvas
       className="webgl-canvas"
       dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
-      camera={{ position: [0, 0, 6], fov: 45 }}
+      camera={{ position: [0, 0.4, 6], fov: 45 }}
     >
       <StoreSmoother />
+      <CameraRig />
       <Nebula />
       <Lights />
       <XMark />
+      <Orbiters />
       <Particles />
     </Canvas>
   )
