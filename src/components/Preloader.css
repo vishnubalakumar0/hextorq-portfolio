@@ -1,0 +1,184 @@
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: radial-gradient(120% 120% at 50% 0%, #0a0c14 0%, #05060a 60%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* subtle animated grid + glow behind the logo */
+.preloader::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background-image: linear-gradient(rgba(0, 229, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 60%);
+  animation: preGrid 12s linear infinite;
+}
+@keyframes preGrid {
+  to {
+    transform: translateY(48px);
+  }
+}
+.preloader::after {
+  content: '';
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.18), transparent 60%);
+  filter: blur(40px);
+  animation: prePulse 4s ease-in-out infinite;
+}
+@keyframes prePulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.pre-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  padding: 0 24px;
+}
+
+.pre-word {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 0.04em;
+}
+
+/* wrapper holds the flare behind the word + the underline below it */
+.pre-wordwrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+/* radial light-burst behind the X moment */
+.pre-flare {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60vw;
+  max-width: 720px;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(93, 132, 255, 0.45) 0%,
+    rgba(124, 58, 237, 0.28) 30%,
+    transparent 62%
+  );
+  filter: blur(20px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* gradient underline that draws in under the wordmark */
+.pre-underline {
+  width: min(420px, 70vw);
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  background: linear-gradient(90deg, transparent, var(--blue), var(--violet), transparent);
+  box-shadow: 0 0 18px rgba(93, 132, 255, 0.5);
+}
+
+.pre-letter-mask {
+  overflow: hidden;
+  display: inline-block;
+  line-height: 0.9;
+}
+
+.pre-letter {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.8rem, 12vw, 9rem);
+  letter-spacing: 0.02em;
+  /* silver/white metallic — matches the logo lettering */
+  background: linear-gradient(180deg, #ffffff 0%, #cfd6e6 55%, #8b93a7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* The signature X — blue→violet gradient + glow, like the logo */
+.pre-letter.is-x {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--violet) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 22px rgba(93, 132, 255, 0.55));
+}
+
+.pre-tagline {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--font-body);
+  font-size: clamp(0.72rem, 1.5vw, 0.95rem);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+.pre-tagline span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.pre-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--violet));
+}
+
+.pre-bar {
+  width: min(320px, 62vw);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pre-bar-fill {
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  box-shadow: 0 0 16px var(--glow-cyan);
+}
+
+.pre-count {
+  position: absolute;
+  bottom: clamp(24px, 5vh, 48px);
+  right: clamp(24px, 5vw, 64px);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: 200;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+}

@@ -1,0 +1,227 @@
+/* ─────────────────────────────────────────────────────────────
+   HEXTORQ — GLOBAL STYLES  (dark futuristic theme)
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Core palette — matched to the Hextorq logo */
+  --bg: #000000;
+  --bg-elev: #08090f;
+  --surface: #0c0e16;
+  --text: #f1f3fa;
+  --text-dim: #9aa3b8;
+  --text-faint: #5b6479;
+  --line: rgba(255, 255, 255, 0.08);
+
+  /* Accents — electric blue → violet (from the logo's gradient X) */
+  --blue: #3d6bff;
+  --violet: #7c3aed;
+  --blue-soft: #5d84ff;
+  --glow-blue: rgba(61, 107, 255, 0.55);
+  --glow-violet: rgba(124, 58, 237, 0.55);
+
+  /* Back-compat aliases (older rules referenced --cyan/--purple) */
+  --cyan: var(--blue);
+  --purple: var(--violet);
+  --glow-cyan: var(--glow-blue);
+  --glow-purple: var(--glow-violet);
+
+  /* Type */
+  --font-display: 'Sora', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Layout */
+  --maxw: 1280px;
+  --pad-x: clamp(20px, 5vw, 80px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Lenis smooth-scroll requirements */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+::selection {
+  background: var(--cyan);
+  color: #04121c;
+}
+
+/* Thin custom scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--cyan), var(--purple));
+  border-radius: 20px;
+}
+
+/* The fixed WebGL canvas sits behind all content */
+.webgl-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Fixed scrim above the canvas, below content — keeps text readable
+   over the animated nebula (darker at the top for the nav, and a
+   soft radial vignette at the edges). */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0) 18%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 16%),
+    radial-gradient(120% 90% at 50% 40%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* Content scrolls above the canvas */
+.content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Shared layout helpers */
+.section {
+  position: relative;
+  padding: clamp(90px, 14vh, 180px) var(--pad-x);
+}
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--blue-soft);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--blue), transparent);
+  display: inline-block;
+}
+
+.h-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.035em;
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--blue-soft), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Animated gradient shimmer for accent words/lines */
+.text-shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--blue) 0%,
+    #a9c0ff 25%,
+    var(--violet) 50%,
+    #a9c0ff 75%,
+    var(--blue) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 7s linear infinite;
+}
+@keyframes shimmer {
+  to {
+    background-position: -250% 0;
+  }
+}
+
+/* Generic reveal — GSAP toggles .is-visible */
+.reveal {
+  opacity: 0;
+  transform: translateY(42px);
+  filter: blur(6px);
+  transition:
+    opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
