@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import IntroAnimation from './components/IntroAnimation'
+import Preloader from './components/Preloader'
 import Navbar from './components/Navbar'
 import Cursor from './components/Cursor'
 import { ScrollProgress, Marquee } from './components/Chrome'
@@ -47,7 +47,7 @@ export default function App() {
 
   return (
     <>
-      {!ready && <IntroAnimation onComplete={() => setReady(true)} />}
+      {!ready && <Preloader onDone={() => setReady(true)} />}
 
       <Cursor />
       <ScrollProgress />

@@ -34,8 +34,13 @@ export default function Navbar({ lenisRef }) {
 
       <nav className={`nav-links ${open ? 'is-open' : ''}`}>
         {nav.map((item) => (
-          <button key={item.target} onClick={() => go(item.target)}>
-            {item.label}
+          <button className="nav-link" key={item.target} onClick={() => go(item.target)}>
+            <span className="nav-roll">
+              <span className="nav-roll-inner">
+                <span>{item.label}</span>
+                <span aria-hidden="true">{item.label}</span>
+              </span>
+            </span>
           </button>
         ))}
         <a className="nav-cta" href={`mailto:${brand.email}`}>

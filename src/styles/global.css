@@ -7,9 +7,9 @@
   --bg: #000000;
   --bg-elev: #08090f;
   --surface: #0c0e16;
-  --text: #f1f3fa;
-  --text-dim: #9aa3b8;
-  --text-faint: #5b6479;
+  --text: #f4f6fc;
+  --text-dim: #b7bfd4;
+  --text-faint: #6a7288;
   --line: rgba(255, 255, 255, 0.08);
 
   /* Accents — electric blue → violet (from the logo's gradient X) */

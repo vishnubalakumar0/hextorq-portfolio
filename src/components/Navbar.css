@@ -42,28 +42,38 @@
   gap: 2.2rem;
 }
 
-.nav-links button {
+.nav-link {
   font-size: 0.92rem;
   color: var(--text-dim);
   letter-spacing: 0.02em;
-  transition: color 0.25s ease;
   position: relative;
 }
-.nav-links button:hover {
-  color: var(--text);
+
+/* Roll-back hover: two stacked copies slide as one, revealing the
+   accent-coloured copy from below. */
+.nav-roll {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  height: 1.4em; /* clip to a single line so only one copy shows */
+  line-height: 1.4em;
 }
-.nav-links button::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 0;
-  height: 1px;
-  background: var(--cyan);
-  transition: width 0.3s ease;
+.nav-roll-inner {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0);
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 }
-.nav-links button:hover::after {
-  width: 100%;
+.nav-roll-inner > span {
+  display: block;
+  height: 1.4em;
+  line-height: 1.4em;
+}
+.nav-roll-inner > span:last-child {
+  color: var(--blue-soft);
+}
+.nav-link:hover .nav-roll-inner {
+  transform: translateY(-50%);
 }
 
 .nav-cta {
@@ -121,7 +131,7 @@
   .nav-links.is-open {
     transform: translateX(0);
   }
-  .nav-links button {
+  .nav-link {
     font-size: 1.4rem;
     color: var(--text);
   }

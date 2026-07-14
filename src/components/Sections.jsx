@@ -1,10 +1,22 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { hero, story, services, products, projects, process, ecosystem, contact, footer, brand } from '../content'
+import {
+  hero,
+  story,
+  services,
+  products,
+  projects,
+  process,
+  showcase,
+  contact,
+  footer,
+  brand,
+} from '../content'
 import { useReveal } from '../hooks/useReveal'
 import { useMagnetic } from '../hooks/useMagnetic'
 import { useTilt } from '../hooks/useTilt'
+import ScrollSplitCard from './ScrollSplitCard'
 import './Sections.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -123,25 +135,41 @@ export function Story() {
   const scope = useReveal('.reveal')
   const statsRef = useRef(null)
 
-  // Count-up animation for the stat numbers.
+  // Count-up + entrance animation for stat cards.
   useEffect(() => {
     if (!statsRef.current) return
     const ctx = gsap.context(() => {
-      gsap.utils.toArray('.stat-value').forEach((el) => {
-        const raw = el.dataset.value || ''
-        const num = parseFloat(raw.replace(/[^0-9.]/g, ''))
-        if (isNaN(num)) return
-        const suffix = raw.replace(/[0-9.,]/g, '')
-        const obj = { v: 0 }
-        gsap.to(obj, {
-          v: num,
-          duration: 1.6,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-          onUpdate: () => {
-            el.textContent = Math.round(obj.v) + suffix
+      const statCards = statsRef.current.querySelectorAll('.stat')
+      // Entrance
+      gsap.from(statCards, {
+        y: 40,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: statsRef.current,
+          start: 'top 82%',
+          once: true,
+          onEnter: () => {
+            // Count-up each value after cards enter
+            gsap.utils.toArray('.stat-value').forEach((el) => {
+              const raw = el.dataset.value || ''
+              const num = parseFloat(raw.replace(/[^0-9.]/g, ''))
+              if (isNaN(num)) return
+              const suffix = raw.replace(/[0-9.,]/g, '')
+              const obj = { v: 0 }
+              gsap.to(obj, {
+                v: num,
+                duration: 1.6,
+                ease: 'power2.out',
+                onUpdate: () => {
+                  el.textContent = Math.round(obj.v) + suffix
+                },
+              })
+            })
           },
-        })
+        },
       })
     }, statsRef)
     return () => ctx.revert()
@@ -164,7 +192,7 @@ export function Story() {
 
           <div className="story-stats" ref={statsRef}>
             {story.stats.map((s, i) => (
-              <div className="stat reveal" key={i}>
+              <div className="stat" key={i}>
                 <div className="stat-value text-gradient" data-value={s.value}>
                   {s.value}
                 </div>
@@ -182,6 +210,29 @@ export function Story() {
 export function Services() {
   const scope = useReveal('.reveal')
   const tiltRef = useTilt('.svc-card', { max: 7 })
+  const cardsRef = useRef(null)
+
+  useEffect(() => {
+    if (!cardsRef.current) return
+    const ctx = gsap.context(() => {
+      const cards = cardsRef.current.querySelectorAll('.svc-card')
+      gsap.from(cards, {
+        y: 60,
+        opacity: 0,
+        scale: 0.92,
+        duration: 0.9,
+        stagger: 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: cardsRef.current,
+          start: 'top 80%',
+          once: true,
+        },
+      })
+    }, cardsRef)
+    return () => ctx.revert()
+  }, [])
+
   return (
     <section className="services section" id="services" ref={scope}>
       <div className="container">
@@ -191,7 +242,7 @@ export function Services() {
 
         <div className="svc-grid" ref={tiltRef}>
           {services.items.map((s) => (
-            <article className="svc-card glass reveal no-move" key={s.id} data-cursor="view">
+            <article className="svc-card glass no-move" key={s.id} data-cursor="view">
               <div className="svc-index">{s.index}</div>
               <h3 className="svc-title">{s.title}</h3>
               <p className="svc-summary">{s.summary}</p>
@@ -213,36 +264,43 @@ export function Services() {
 /* ── PRODUCTS ─────────────────────────────────────────────────── */
 export function Products() {
   const scope = useReveal('.reveal')
+  const cardsRef = useRef(null)
 
-  // Parallax the glowing orb + product name inside each visual for depth.
+  // Card entrance animation
   useEffect(() => {
-    if (!scope.current) return
+    if (!cardsRef.current) return
     const ctx = gsap.context(() => {
-      gsap.utils.toArray(scope.current.querySelectorAll('.prod-visual')).forEach((visual) => {
-        const orb = visual.querySelector('.prod-orb')
-        const name = visual.querySelector('.prod-name')
-        if (orb)
-          gsap.fromTo(
-            orb,
-            { yPercent: -14 },
-            {
-              yPercent: 14,
-              ease: 'none',
-              scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: true },
-            }
-          )
-        if (name)
-          gsap.fromTo(
-            name,
-            { yPercent: 8 },
-            {
-              yPercent: -8,
-              ease: 'none',
-              scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: true },
-            }
-          )
+      const cards = cardsRef.current.querySelectorAll('.prod-card')
+      gsap.from(cards, {
+        y: 80,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: cardsRef.current,
+          start: 'top 75%',
+          once: true,
+        },
+        onComplete: () => {
+          // Parallax after cards are visible
+          gsap.utils.toArray(cardsRef.current.querySelectorAll('.prod-visual')).forEach((visual) => {
+            const orb = visual.querySelector('.prod-orb')
+            const name = visual.querySelector('.prod-name')
+            if (orb)
+              gsap.fromTo(orb, { yPercent: -14 }, {
+                yPercent: 14, ease: 'none',
+                scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: true },
+              })
+            if (name)
+              gsap.fromTo(name, { yPercent: 8 }, {
+                yPercent: -8, ease: 'none',
+                scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: true },
+              })
+          })
+        },
       })
-    }, scope)
+    }, cardsRef)
     return () => ctx.revert()
   }, [])
 
@@ -253,10 +311,10 @@ export function Products() {
         <MaskHeading text={products.heading} className="section-heading" />
         <p className="section-sub reveal">{products.subheading}</p>
 
-        <div className="prod-list">
+        <div className="prod-list" ref={cardsRef}>
           {products.items.map((p, i) => (
             <article
-              className={`prod-card reveal ${i % 2 ? 'is-reverse' : ''}`}
+              className={`prod-card ${i % 2 ? 'is-reverse' : ''}`}
               key={p.id}
               style={{ '--accent': p.accent }}
             >
@@ -294,6 +352,29 @@ export function Products() {
 export function Projects() {
   const scope = useReveal('.reveal')
   const tiltRef = useTilt('.proj-card', { max: 6 })
+  const cardsRef = useRef(null)
+
+  useEffect(() => {
+    if (!cardsRef.current) return
+    const ctx = gsap.context(() => {
+      const cards = cardsRef.current.querySelectorAll('.proj-card')
+      gsap.from(cards, {
+        y: 50,
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: cardsRef.current,
+          start: 'top 78%',
+          once: true,
+        },
+      })
+    }, cardsRef)
+    return () => ctx.revert()
+  }, [])
+
   return (
     <section className="projects section" id="projects" ref={scope}>
       <div className="container">
@@ -303,7 +384,7 @@ export function Projects() {
 
         <div className="proj-grid" ref={tiltRef}>
           {projects.items.map((p) => (
-            <article className="proj-card glass reveal no-move" key={p.id} data-cursor="explore">
+            <article className="proj-card glass no-move" key={p.id} data-cursor="explore">
               <h3 className="proj-title">{p.title}</h3>
               <p className="proj-summary">{p.summary}</p>
               <ul className="proj-tags">
@@ -324,6 +405,27 @@ export function Projects() {
 export function Process() {
   const section = useRef(null)
   const track = useRef(null)
+
+  // Animate steps as they enter on scroll
+  useEffect(() => {
+    if (!track.current) return
+    const ctx = gsap.context(() => {
+      const steps = track.current.querySelectorAll('.process-step')
+      gsap.from(steps, {
+        y: 40,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: track.current,
+          start: 'top 78%',
+          once: true,
+        },
+      })
+    }, track)
+    return () => ctx.revert()
+  }, [])
 
   useEffect(() => {
     if (!section.current || !track.current) return
@@ -373,28 +475,35 @@ export function Process() {
   )
 }
 
-/* ── ECOSYSTEM (outbound links to the other Hextorq sites) ─────── */
+/* ── SHOWCASE (scroll-split product cards) ────────────────────── */
 export function Ecosystem() {
-  const scope = useReveal('.reveal')
-  return (
-    <section className="ecosystem section" id="ecosystem" ref={scope}>
-      <div className="container">
-        <span className="eyebrow reveal">{ecosystem.eyebrow}</span>
-        <MaskHeading text={ecosystem.heading} className="section-heading" />
-        <p className="section-sub reveal">{ecosystem.subheading}</p>
+  return <ScrollSplitCard />
+}
 
-        <div className="eco-grid">
-          {ecosystem.links.map((l) => (
-            <a className="eco-link reveal" href={l.href} key={l.label} data-cursor="open">
-              <span className="eco-name">{l.label}</span>
-              <span className="eco-note">{l.note}</span>
-              <span className="eco-arrow">↗</span>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
+/* Minimal inline social glyphs for the footer */
+const SOCIAL_ICONS = {
+  X: (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  ),
+  Instagram: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  ),
+  YouTube: (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M23 12s0-3.2-.4-4.7a2.5 2.5 0 0 0-1.7-1.7C19.4 5.2 12 5.2 12 5.2s-7.4 0-8.9.4A2.5 2.5 0 0 0 1.4 7.3C1 8.8 1 12 1 12s0 3.2.4 4.7a2.5 2.5 0 0 0 1.7 1.7c1.5.4 8.9.4 8.9.4s7.4 0 8.9-.4a2.5 2.5 0 0 0 1.7-1.7C23 15.2 23 12 23 12zM9.8 15.3V8.7l6.2 3.3z" />
+    </svg>
+  ),
+  LinkedIn: (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+    </svg>
+  ),
 }
 
 /* ── CONTACT + FOOTER ─────────────────────────────────────────── */
@@ -424,21 +533,53 @@ export function Contact() {
         </div>
       </div>
 
+      {/* Reference-matched footer */}
       <footer className="footer">
-        <div className="container footer-inner">
-          <div className="footer-brand">
-            <span className="nav-logo-mark" />
-            {brand.name}
-          </div>
-          <p className="footer-note">{footer.note}</p>
-          <div className="footer-socials">
-            {brand.socials.map((s) => (
-              <a key={s.label} href={s.href}>
-                {s.label}
-              </a>
+        <div className="container">
+          <div className="footer-top">
+            <div className="footer-lead">
+              <p className="footer-tagline">{footer.tagline}</p>
+              <div className="footer-socials">
+                {brand.socials.map((s) => (
+                  <a key={s.label} href={s.href} className="footer-social" aria-label={s.label}>
+                    {SOCIAL_ICONS[s.label] || s.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {footer.columns.map((col) => (
+              <div className="footer-col" key={col.title}>
+                <h4 className="footer-col-title">{col.title}</h4>
+                <ul>
+                  {col.links.map((l) => (
+                    <li key={l.label}>
+                      <a href={l.href}>
+                        {l.label}
+                        {l.tag && <span className="footer-pill">{l.tag}</span>}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
-          <div className="footer-copy">{footer.copyright}</div>
+
+          {/* Giant outlined wordmark */}
+          <div className="footer-wordmark" aria-hidden="true">
+            {footer.wordmark}
+          </div>
+
+          <div className="footer-bottom">
+            <span className="footer-copy">{footer.copyright}</span>
+            <div className="footer-legal">
+              {footer.legal.map((l) => (
+                <a key={l.label} href={l.href}>
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </footer>
     </section>

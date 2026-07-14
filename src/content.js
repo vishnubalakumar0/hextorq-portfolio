@@ -6,24 +6,24 @@
  *  and lists here — nothing else needs to change.
  *
  *  TODO for Hextorq: replace every `href: '#'` with the real live
- *  URL (Panda product sites + your other published websites), and
- *  tune the stat numbers to real figures.
+ *  URL (product sites + your other published websites), and tune
+ *  the stat numbers to real figures.
  * ─────────────────────────────────────────────────────────────
  */
 
 export const brand = {
   name: 'HEXTORQ',
-  intro: 'HEXTORQ', // shown building letter-by-letter in the intro
+  intro: 'HEXTORQ',
   tagline: 'Code · Innovate · Elevate',
   taglineWords: ['Code', 'Innovate', 'Elevate'],
   email: 'hello@hextorq.tech',
   domain: 'hextorq.tech',
   location: 'India · Remote-first',
   socials: [
-    { label: 'LinkedIn', href: '#' },
+    { label: 'X', href: '#' },
     { label: 'Instagram', href: '#' },
-    { label: 'GitHub', href: '#' },
-    { label: 'X / Twitter', href: '#' },
+    { label: 'YouTube', href: '#' },
+    { label: 'LinkedIn', href: '#' },
   ],
 }
 
@@ -46,11 +46,11 @@ export const hero = {
 
 export const story = {
   eyebrow: 'WHO WE ARE',
-  heading: 'One company. Three engines of impact.',
+  heading: 'We turn ambitious ideas into technology that ships.',
   paragraphs: [
-    'Hextorq is where ideas are engineered into reality. We design, build and ship technology across the full stack — and we don’t stop at client work.',
-    'We run three engines at once: bespoke IT services for businesses, our own family of SaaS products in production, and a hands-on innovation lab that turns students and inventors into builders.',
-    'Whatever the domain — web, mobile, ERP, payments, IoT — if it can be built, Hextorq builds it.',
+    'Hextorq is a full-spectrum technology company. We design, engineer and operate software end-to-end — held to the same bar whether it carries a client’s name or our own.',
+    'That work runs on three fronts: custom IT services for businesses, a growing family of SaaS products live in production, and an innovation lab mentoring the students and makers building what’s next.',
+    'Web, mobile, ERP, payments, IoT — across every domain the job is the same: take the idea seriously, and ship it.',
   ],
   stats: [
     { value: '250+', label: 'Projects delivered' },
@@ -112,12 +112,12 @@ export const services = {
   ],
 }
 
-/* ── PILLAR 2 — PRODUCTS (the Panda suite) ────────────────────── */
+/* ── PILLAR 2 — PRODUCTS ──────────────────────────────────────── */
 export const products = {
-  eyebrow: 'PILLAR 02 — BUILT BY HEXTORQ',
-  heading: 'The Panda suite. Our products, in production.',
+  eyebrow: 'PILLAR 02 — HEXTORQ PRODUCTS',
+  heading: 'Software we own, live in production.',
   subheading:
-    'A family of SaaS products running for real customers today — each with its own dedicated platform.',
+    'Not case studies — real SaaS platforms that Hextorq designs, ships and operates, trusted by paying customers every single day.',
   items: [
     {
       id: 'paypanda',
@@ -201,21 +201,48 @@ export const projects = {
   ],
 }
 
-/* ── ECOSYSTEM — links out to their other published sites ─────── */
-export const ecosystem = {
-  eyebrow: 'THE ECOSYSTEM',
-  heading: 'Every Hextorq property, one hub.',
-  subheading:
-    'Hextorq runs a network of dedicated platforms. Jump straight to any of them.',
-  links: [
-    { label: 'PayPanda', note: 'Payments', href: '#' },
-    { label: 'PrintPanda', note: 'Printing', href: '#' },
-    { label: 'TicketsPanda', note: 'Ticketing', href: '#' },
-    { label: 'Hextorq Main', note: 'Company', href: '#' },
+/* ── PRODUCT SHOWCASE — scroll-split interactive cards ─────────── */
+export const showcase = {
+  eyebrow: 'PRODUCT SHOWCASE',
+  heading: 'Three products. One ecosystem.',
+  // Dark tech-circuit abstract — splits cleanly across 3 panels.
+  image:
+    'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=2400&auto=format&fit=crop',
+  cards: [
+    {
+      tag: 'Payments',
+      title: 'PayPanda',
+      description:
+        'A secure, developer-first payment gateway — clean API, fraud protection and fast settlement. Drop payments into any product in minutes.',
+      bgColor: '#0c1a3f',
+      textColor: '#eaf0ff',
+      href: '#',
+      icon: 'payment',
+    },
+    {
+      tag: 'Printing',
+      title: 'PrintPanda',
+      description:
+        'Printing, fully automated. Users upload files, pay online, and the job is queued and ready — no counter, no waiting.',
+      bgColor: '#1a5bcf',
+      textColor: '#ffffff',
+      href: '#',
+      icon: 'printing',
+    },
+    {
+      tag: 'Ticketing',
+      title: 'TicketsPanda',
+      description:
+        'End-to-end event ticketing — register an event, collect payments, and issue tickets automatically, with entry management built in.',
+      bgColor: '#160c33',
+      textColor: '#ece6ff',
+      href: '#',
+      icon: 'ticketing',
+    },
   ],
 }
 
-/* ── PROCESS — horizontal pinned storytelling ─────────────────── */
+/* ── PROCESS — horizontal pinned storytelling (8 steps) ────────── */
 export const process = {
   eyebrow: 'HOW WE WORK',
   heading: 'From idea to impact.',
@@ -227,48 +254,94 @@ export const process = {
     },
     {
       no: '02',
+      title: 'Strategize',
+      text: 'We shape scope, milestones and the tech stack so every decision points at the outcome.',
+    },
+    {
+      no: '03',
       title: 'Design',
       text: 'Interfaces and architecture designed together, so what looks good also scales well.',
     },
     {
-      no: '03',
+      no: '04',
+      title: 'Prototype',
+      text: 'A working prototype early — so you feel the product before we commit to building all of it.',
+    },
+    {
+      no: '05',
       title: 'Engineer',
       text: 'Clean, tested, production-grade code shipped in tight iterations you can see every week.',
     },
     {
-      no: '04',
-      title: 'Launch',
-      text: 'We deploy, monitor and harden — a launch that’s an event, not an emergency.',
+      no: '06',
+      title: 'Test & Harden',
+      text: 'Automated tests, security reviews and load checks — we break it before your users can.',
     },
     {
-      no: '05',
+      no: '07',
+      title: 'Launch',
+      text: 'We deploy, monitor and support — a launch that’s an event, not an emergency.',
+    },
+    {
+      no: '08',
       title: 'Elevate',
       text: 'Post-launch we measure, refine and grow the product alongside your business.',
     },
   ],
 }
 
-/* Words for the kinetic marquee strip */
+/* Kinetic marquee — capability phrases */
 export const marqueeWords = [
-  'Software',
-  'Web',
-  'Apps',
-  'ERP',
-  'Payments',
-  'IoT',
-  'Automation',
-  'Innovation',
+  'Software Engineering',
+  'Web & Mobile',
+  'Cloud & DevOps',
+  'ERP Systems',
+  'Payment Platforms',
+  'IoT & Hardware',
+  'AI Automation',
+  'Product Innovation',
 ]
 
 export const contact = {
   eyebrow: 'LET’S BUILD',
-  heading: ['Have something', 'worth building?'],
+  heading: ['Ready to build', 'with Hextorq?'],
   subtitle:
-    'A product, a platform, an academic project, or an idea on a napkin — tell us what you’re working on and we’ll take it from here.',
+    'Whether it’s a product, a platform, or an academic project — tell us what you’re working on and we’ll take it from there.',
   cta: { label: 'Start a conversation', href: 'mailto:hello@hextorq.tech' },
 }
 
+/* ── FOOTER (reference-matched: columns + big wordmark) ────────── */
 export const footer = {
-  note: 'Hextorq — IT services, SaaS products and innovation, engineered under one roof.',
+  tagline: 'Hextorq is the modern way to build, ship and scale technology.',
+  columns: [
+    {
+      title: 'Products',
+      links: [
+        { label: 'PayPanda', href: '#' },
+        { label: 'PrintPanda', href: '#' },
+        { label: 'TicketsPanda', href: '#' },
+      ],
+    },
+    {
+      title: 'Resources',
+      links: [
+        { label: 'Services', href: '#services' },
+        { label: 'Projects', href: '#projects' },
+      ],
+    },
+    {
+      title: 'Company',
+      links: [
+        { label: 'About', href: '#story' },
+        { label: 'Careers', href: '#', tag: 'WE’RE HIRING' },
+      ],
+    },
+  ],
+  wordmark: 'HEXTORQ',
+  legal: [
+    { label: 'Security', href: '#' },
+    { label: 'Terms of service', href: '#' },
+    { label: 'Privacy policy', href: '#' },
+  ],
   copyright: `© ${new Date().getFullYear()} Hextorq. All rights reserved.`,
 }
